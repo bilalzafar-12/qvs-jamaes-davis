@@ -1,0 +1,251 @@
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modalt {
+  display: block; /* Hidden by default */
+  position: absolute; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 0px; /* Location of the box */
+  left: 3%;
+  margin: auto;
+  width: 97.7%; /* Full width */
+  height: 90%;
+
+}
+
+
+/* Modal Content */
+.modalt-content {
+  position: relative;
+  border-radius: 0px;
+  background-color: #fefefe;
+  margin-left: 0%;
+  padding: 0;
+  border: 1px solid #888;
+  width: 100%;
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+  height: 9%;
+  left: 0%;
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {center:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {center:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: #000;
+  float: right;
+  margin-right: 1%;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  opacity: 0.5;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modalt-header {
+  padding: 2px 16px;
+  font-size: 1vw;
+  height: 15vh;
+  border-radius: 1px;
+  margin-top: 0.6%;
+  background: url("../img/header8.jpg") center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+}
+
+.modalt-body {
+	padding: .05vh 0.5vw 1vh 2vw;
+	width: 100%;	
+}
+	
+
+
+#modal_body_left {
+	border-radius: 3px;
+	width: 25%; 
+	margin: -3.5% 0% 3% 0%;
+	float: left; 
+	background: #fff;
+	height: 65vh;
+	border:3px solid #fff;
+	box-shadow: 0 2px 4px 0 rgba(12,0,0,0.2), 0 1px 5px 0 rgba(12,0,0,0.19);
+}
+
+#modal_body_right {
+	border-radius: 3px;
+	margin: -3.5% 2% 3% 29%;
+	width: 67%;
+	height: 65vh; 
+	background: #fff;
+	border:3px solid #fff;
+	box-shadow: 0 2px 4px 0 rgba(12,0,0,0.2), 0 1px 5px 0 rgba(12,0,0,0.19);
+	
+}
+
+#imgupload {
+	width: 25%;
+	height: 25%;
+	margin-top: 5%;
+	
+	
+}
+
+
+#modal_body_left_info {
+	font-size: 0.6vw;
+	font-weight:500;
+	line-height: 2.7vw;
+	list-style: none;
+	padding-left: 0;
+	
+	
+}
+
+
+
+
+#modal_body_left_info li{
+	box-shadow: 0 1px 1px 0 rgba(246, 246, 246,0.6), 0 1px 1px 0 rgba(246, 246, 246,0.6);
+	width: 100%;
+}
+
+#modal_body_left_info li:first-child{
+	border-top: 1px solid rgba(0,0,0,0.1);
+	width: 100%;
+	
+}
+
+#modal_body_left_info li.after{
+	border-top: 1px solid #fff;
+	width: 100%;
+}
+
+#modal_body_left_info li:last-child{
+	border-bottom: 1px solid #fff;
+	width: 100%;
+}
+
+	
+
+#frmeditaccount, #frmeditsecurity, #frmeditpermission, #frmeditsubscription {
+
+	display: block;
+	position: relative;
+	border:3px solid #fff;
+	margin: 3% 5% 3% 5%;
+	width: 90%;	
+	max-width:90%;
+	height: 80%;
+	max-height: 100%;
+	background-color: #FFF;
+	color: white;
+	box-shadow: 0 2px 4px 0 rgba(12,0,0,0.2), 0 1px 5px 0 rgba(12,0,0,0.19);
+}
+
+#frmeditaccount a {
+	color: #FFF;
+}
+
+#frmeditaccount a:hover {
+	color: silver;
+}
+
+
+input[type=text], input[type=password], input[type=date], #inputlist {
+  width: 30%;
+  padding: 12px 20px;
+  margin:  1% 2% 1% 2%;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-size: 1.3vh;
+  
+}
+
+#btnedit {
+
+  cursor: pointer;
+  width: 10%;
+  font-size: 12pt;
+  border-radius: 3px;
+  margin-left: 2%;
+  margin-top: 1%;
+    
+}
+
+
+
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #D0E7F7;
+  opacity: 0.5;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #065EA3;
+  color: #fff;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+
+#main_section_usr {
+	margin: auto;
+	z-index: 1;
+
+	
+}
+
+#title_info {
+	font-size: 2.1vh;
+	font-weight: 500;
+	
+}
+
+
+
+
+

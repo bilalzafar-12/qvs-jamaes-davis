@@ -1,0 +1,286 @@
+<?php
+
+include('assets/db/database.php');
+
+if(!isset($_SESSION["username"])){
+	echo '<p style="color: #C60000;font-size: 14pt;font-weight: 500;">Access Denied: Please <a href="login.php">sign in!</a></p>';
+	die();
+}
+
+if($_SESSION["security"] == "1"){
+	echo '<p style="color: #C60000;font-size: 13pt;font-weight: 500;">
+	You do not have permission to access this page, please refer to your system administrator.</p>';
+	die();
+	
+}
+	
+$loggedInUserID = $_SESSION["loggedInUserID"];
+	
+	
+	
+$sql = "SELECT * FROM tblhistory WHERE user_id='$loggedInUserID'";
+$validationSearchResult = mysqli_query($connection, $sql);
+ 
+
+
+?>
+
+	
+
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>Dashboard</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link href="assets/img/qvs_logo2.png" rel="icon">
+		<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="assets/css/style_side.css?v=1.42">
+		<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+		<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+		<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
+		
+	</head>
+  	<body>
+		
+		<div class="wrapper d-flex align-items-stretch" >
+			<?php include('layouts/sidebar.php'); ?>
+        	<!-- Page Content  -->
+      		<div id="content" class="p-4 p-md-5">
+
+				<nav class="navbar navbar-expand-lg navbar-red bg-red" id="navbar">
+					<div class="container-fluid" >
+						<button type="button" id="sidebarCollapse" class="btn btn-primary">
+							<i class="fa fa-bars"></i>
+							<span class="sr-only">Toggle Menu</span>
+						</button>
+						<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<i class="fa fa-bars"></i>
+						</button>
+						<?php 
+						$emailQ = "SELECT id,subscription_expiry_date  FROM user_subscription WHERE user_id='$loggedInUserID' LIMIT 1";	
+						$checkSubsExpiry = $connection->query($emailQ);
+						if ($checkSubsExpiry->num_rows > 0) { 
+							$checkSubsExpiryy=mysqli_fetch_assoc($checkSubsExpiry); ?>
+							<div style="margin-left:10px;">
+								<span style="background: red;color: white;padding: 10px">
+									<?php if($checkSubsExpiryy['subscription_expiry_date'] < date('Y-m-d')) { 
+											echo "Subscription Expired!";
+										} else { 
+											echo 'Subscription Expires:'.date('m-d-Y',strtotime($checkSubsExpiryy['subscription_expiry_date']));
+										}
+									?>
+								</span>
+							</div>
+						<?php } else { ?>
+							<div style="margin-left:10px;">
+								<span style="background: red;color: white;padding: 10px">Subscription Required</span>
+							</div>
+						<?php } ?>
+						
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="nav navbar-nav ml-auto">
+								<li class="nav-item active">
+									<?php 
+									$emailQ = "SELECT id,subscription_expiry_date  FROM user_subscription WHERE user_id='$loggedInUserID' LIMIT 1";	
+									$checkSubsExpiry = $connection->query($emailQ);
+									if ($checkSubsExpiry->num_rows > 0) { 
+										$checkSubsExpiryy=mysqli_fetch_assoc($checkSubsExpiry); ?>
+										
+										<?php if($checkSubsExpiryy['subscription_expiry_date'] < date('Y-m-d')) { ?>
+											<a href="purchase_subscription.php"> 
+												<button type="button" class="dashbtn">Buy</button> 
+											</a>
+										<?php } else { ?> 
+											<a href="new_validation.php"> 
+												<button type="button" class="dashbtn">New Validation</button> 
+											</a>
+										<?php } ?>
+
+									<?php } else { ?>
+
+										<a href="purchase_subscription.php"> 
+											<button type="button" class="dashbtn">Buy</button> 
+										</a>
+
+									<?php } ?>
+									<a  href="dashboard.php"> 
+										<button type="button" class="dashbtn"> 
+											<i class="fa fa-home" title="home"></i> 
+											Home 
+										</button> 
+									</a>
+									<a href="editaccount.php">
+										<button type="button" class="dashbtn"> 
+											<i class="fa fa-user" title="Edit"></i> 
+											<?php echo $_SESSION["username"]; ?> 
+										</button> 
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+
+				<h2 class="mb-4">Dashboard</h2>
+					
+				<div id="main_section" >
+					<?php 
+						$loggedInUserID = $_SESSION["loggedInUserID"];
+						$emailQ = "SELECT id FROM user_subscription WHERE user_id='$loggedInUserID' LIMIT 1";	
+						$result = $connection->query($emailQ);
+						if ($result->num_rows == 0) {
+							echo '<div style="text-align: center;"><label class="error_label" style="color:red;"> No Validation History Found.</label></div>';
+						} else { ?>	
+							<p style="font-weight:500;">Qualification Validation</p>
+							<!-- <form id="searchval" method="post">
+								<input type="text" placeholder="Search history..." name="search_val" required>
+								<input class="fa fas-search" id="btns" type="submit" value="&#xf002 Search" name="search" style="padding: 0.4%;"/>
+							</form> -->
+
+							<table class="table table-fluid" id="records_tab_view" style="font-size:0.8rem;">
+								<thead style="background-color: #ECFEFF;">
+									<tr>
+										<th>First Name</th>
+										<th>Last Name</th>
+										<th>Date of Award</th>
+										<th>Name of Institution</th>
+										<th>Territory</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php 
+								if (mysqli_num_rows($validationSearchResult) > 0) {
+									// output data of each row
+									while($row = $validationSearchResult->fetch_assoc()) { 
+										
+										$firstname				= $row["firstname"];
+										$lastname				= $row["lastname"];
+										$certificateno			= $row["certificateno"];
+										$country				= $row["country"];
+										$date_of_award			= $row["date_of_award"];
+										$dob					= $row["dob"];
+										$institution			= $row["institution"];
+										$qualification			= $row["qualification"];
+										$gradyear				= $row["gradyear"]; ?>
+
+											<tr>
+												<td><?= $firstname ?></td>
+												<td><?= $lastname ?></td>
+												<td><?= $date_of_award ?></td>
+												<td><?= $institution ?></td>
+												<td><?= $country ?></td>
+												<td>
+													<a href="generate_validation_report.php">
+														<button type="button" class="dashbtn"> 
+															<i class="fa fa-eye" title="report" name="report"></i> View Report 
+														</button>
+													</a>
+												</td>
+											</tr>
+									
+									<?php } }?>
+												
+								</tbody>
+							</table>
+									
+										
+					<?php } ?>
+					<script type="text/javascript">
+						$(document).ready( function () {
+							$('#records_tab_view').DataTable();
+						});
+					</script>
+				</div>
+		
+				<!-- <div id="containernewvalidation" style="margin-top: 5%;">	
+					<form method="post" id="frmnewvalidation">
+						<p style="font-weight:500;font-size:1.1rem;margin-bottom: 2.5%;"> Individual's Details </p>
+						<label for="fname">First Name <span class="requiredfield">*</span> </label>
+						<input type="text" value="" name="fname"/>
+						
+						<label for="lname" style="margin-left: 5%;">Last Name <span class="requiredfield">*</span> </label>
+						<input type="text" name="lname" /> </br>
+						
+						<label for="course">Certificate No. </label>
+						<input type="text" name="course" />
+						
+						<label for="territory" style="margin-left: 5%;">Territory </label>
+						<input list="locations" name="territory" id="inputlist_val" />
+						
+						<datalist id="locations" name="locations">
+						<option value="Jamaica">
+						<option value="Trigoidad & Tobago">
+						<option value="Barbados">
+						</datalist> </br>
+						<label for="gradyear">Date of Award <span class="requiredfield">*</span></label>
+						<input type="number" name="gradyear" />
+						<label for="dob" style="margin-left: 5%;"> Date of Birth <span class="requiredfield"> * </span></label>
+						<input type="date" id="dob" name="dob" >
+						</br>
+						<input type="submit" name="newadvsearch" class="dashbtn fa fas-search" value="&#xf002 Search" id="btnedit" style="padding: 0.4%;"/>
+						
+						<div id="searchresults">	
+							<?php 
+								if(isset($newcount)){ 						
+									if($newcount > 0) {
+										echo $newcount.' Record(s) found.';
+									}												
+								} 					
+							?>
+						</div>
+						
+						<div id="noresults">	
+							<?php echo 'No Records found.'; ?>
+						</div>
+					</form>
+				</div>
+				
+				
+				<div id="containervalresults" >
+					<table class="table table-fluid" id="records_search_view">
+						<thead>
+							<tr>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Date of Award</th>
+								<th>Territory</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php 
+								if(isset($_SESSION["security"]) && $_SESSION["choice"] !="n" && isset($newdata)) { 
+
+									foreach($newdata as $row) { ?>
+										<tr>
+											<td><?= $row["firstname"]; ?></td>
+											<td><?= $row["lastname"]; ?></td>
+											<td><?= $row["gradyear"]; ?></td>
+											<td><?= $row["country"]; ?></td>
+											<td>
+												<button type="button" class="dashbtn"> 
+													<i class="fa fa-eye" title="report"></i> 
+													View Report 
+												</button>
+											</td>
+										</tr>
+							<?php } } ?>				
+						</tbody>
+					</table>
+				</div> -->
+			</div>	
+      	</div>
+	  
+		<script src="assets/js/popper.js"></script>
+		<script src="assets/js/bootstrap.min.js"></script>
+		<script src="assets/js/mainside.js"></script>
+  	</body>
+</html>
