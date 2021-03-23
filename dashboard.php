@@ -10,7 +10,7 @@
 	if($_SESSION["security"] == "1") {
 		$sql = "SELECT tblcandidate.* FROM tblcandidate INNER JOIN tblhistory ON tblcandidate.id=tblhistory.canididate_id";
 	} else {
-		$sql = "SELECT tblcandidate.* FROM tblcandidate INNER JOIN tblhistory ON tblcandidate.id=tblhistory.canididate_id WHERE tblhistory.user_id='$loggedInUserID'";
+		$sql = "SELECT tblcandidate.* FROM tblcandidate INNER JOIN tblhistory ON tblcandidate.id=tblhistory.canididate_id WHERE tblhistory.user_id='$loggedInUserID' GROUP BY tblhistory.canididate_id";
 	}
 	
 	$validationSearchResult = mysqli_query($connection, $sql);
